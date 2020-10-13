@@ -20,7 +20,6 @@
 from __future__ import print_function
 __metaclass__ = type
 
-import cgi
 import datetime
 import glob
 import optparse
@@ -28,6 +27,10 @@ import os
 import re
 import sys
 import warnings
+try:
+    from cgi import escape
+except ImportError:
+    from html import escape
 import yaml
 
 from collections import defaultdict
@@ -82,7 +85,7 @@ def rst_ify(text):
 def html_ify(text):
     ''' convert symbols like I(this is in italics) to valid HTML '''
 
-    t = cgi.escape(text)
+    t = escape(text)
     t = _ITALIC.sub("<em>" + r"\1" + "</em>", t)
     t = _BOLD.sub("<b>" + r"\1" + "</b>", t)
     t = _MODULE.sub("<span class='module'>" + r"\1" + "</span>", t)
